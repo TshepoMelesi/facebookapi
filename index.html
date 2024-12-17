@@ -21,13 +21,46 @@
                         js.src = "https://connect.facebook.net/en_US/sdk.js";
                         fjs.parentNode.insertBefore(js, fjs);
                         }(document, 'script', 'facebook-jssdk'));
+
+
+                        function checkLoginState(){
+                                FB.getLoginStatus(function(response){
+                                        statusChangeCallback(response)
+                                })
+                        }
+
+                        function statusChangeCallback(response){
+                                if(response.status === "connected"){
+                                        console.log("logged in and authenticated")
+
+                                        fetchUserProfile()
+                                } else{
+                                        console.log("not authenticated")
+                                }
+                        }
+
+                        function fetchUserProfile(){
+                                FB.api("/me", {fields : "name, email"}),
+                                function(response){
+                                        console.log("Successful login for: " + response.name)
+                                        console.log(response)
+                                }
+                        }
                 </script>
         </head>
 
         <body>
                 <h1>Facebook API</h1>
 
-                
+                <div 
+                        class="fb-login-button" 
+                        data-width=" " 
+                        data-size="large"
+                        data-button-type="continue_width"
+                        data-layout="default"
+                        data-logout-link="true"
+                        data-user-continue-as="true"
+                        scope="public_profile, email"></div>
         
         </body>
 </html>
